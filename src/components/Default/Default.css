@@ -1,0 +1,8 @@
+.default-filter {
+  margin: 2rem;
+  font-size: 1.6rem;
+}
+.default-filter:active,
+.default-filter:hover {
+  cursor: pointer;
+}

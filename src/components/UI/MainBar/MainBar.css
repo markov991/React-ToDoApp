@@ -1,0 +1,7 @@
+.main-bar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background-color: #666666;
+}

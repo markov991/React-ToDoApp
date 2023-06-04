@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background-image: linear-gradient(to right, #4d4d4d, #666666);
+  color: #fff;
+}
+#gatsby-focus-wrapper {
+  font-family: "Inter", sans-serif;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

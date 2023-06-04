@@ -1,0 +1,14 @@
+.events-container {
+  border-top: #333333 solid 3px;
+  margin: 20px;
+}
+.event {
+  margin-top: 20px;
+  font-size: 1.6rem;
+  width: fit-content;
+}
+
+.event:active,
+.event:hover {
+  cursor: pointer;
+}
