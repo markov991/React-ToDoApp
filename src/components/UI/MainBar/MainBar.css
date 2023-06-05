@@ -5,3 +5,29 @@
 
   background-color: #666666;
 }
+
+.task-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-bottom: 15px;
+  border-bottom: rgb(53, 60, 61) solid 3px;
+  margin: 35px;
+  gap: 10px;
+}
+
+.task-header {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: azure;
+  font-weight: bold;
+  font-size: 2.4em;
+  margin: 10px;
+  text-align: center;
+}
+.task-description {
+  font-size: 1.6rem;
+  overflow: hidden;
+  margin: 1.5rem auto;
+  text-align: center;
+  height: 7.5rem;
+}

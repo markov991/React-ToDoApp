@@ -1,0 +1,15 @@
+.unfinished-task-box {
+  width: 250px;
+
+  border: rgb(255, 0, 0) solid 3px;
+  border-radius: 8px;
+}
+.unfinished-task-box .task-name {
+  border-bottom: rgb(255, 0, 0) solid 3px;
+  margin: 10px auto;
+  padding-bottom: 10px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 2rem;
+  color: aliceblue;
+  text-align: center;
+}

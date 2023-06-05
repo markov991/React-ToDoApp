@@ -1,7 +1,7 @@
 .calendar-filter-box {
   display: flex;
   flex-direction: column;
-  height: 25%;
+  height: 20rem;
   justify-content: center;
   text-align: center;
   border-bottom: #333333 solid 3px;

@@ -9,6 +9,9 @@ import DateFilter from "../components/DateFilter/DateFilter";
 import Default from "../components/Default/Default";
 import Events from "../components/Events/Events";
 import OnGoingTasks from "../components/Tasks/OnGoingTasks/OnGoingTasks";
+import FinishedTasks from "../components/Tasks/FinishedTasks/FinishedTasks";
+import UnfinishedTasks from "../components/Tasks/UnfinishedTasks/UnfinishedTasks";
+import Modal from "../components/Modal/Modal";
 
 const IndexPage = () => {
   const events = ["Frontend"];
@@ -60,13 +63,36 @@ const IndexPage = () => {
     },
   ];
 
+  const [openTaskInfo, setOpenTaskInfo] = useState(false);
+
   const [eventList, setEventList] = useState(events);
   const [filterEventPar, setFilterEventPar] = useState(tasks);
+  const [taskInfo, SetTaskInfo] = useState();
 
   const filteringActiveTasks = () => {
+    setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
     console.log("hello");
   };
   const filteringSelectedEvent = (e) => {
+    setFilterEventPar(tasks.filter((task) => task.eventName === e));
+    console.log(e);
+  };
+  const openModalInfo = (filterdtask) => {
+    SetTaskInfo(filterdtask);
+    setOpenTaskInfo(true);
+  };
+
+  const modalHandler = (e) => {
+    if (e === "close") {
+      setOpenTaskInfo(false);
+    }
+    if (e === "confirm") {
+      setOpenTaskInfo(false);
+      console.log(tasks.includes(taskInfo));
+
+      taskInfo.status = "finished";
+    }
+    // e.preventDefault();
     console.log(e);
   };
   return (
@@ -79,9 +105,12 @@ const IndexPage = () => {
           <Events onClick={filteringSelectedEvent} events={eventList} />
         </SideBar>
         <MainBar>
-          <OnGoingTasks task={filterEventPar} />
+          <FinishedTasks onClick={openModalInfo} task={filterEventPar} />
+          <OnGoingTasks onClick={openModalInfo} task={filterEventPar} />
+          <UnfinishedTasks onClick={openModalInfo} task={filterEventPar} />
         </MainBar>
       </Container>
+      {openTaskInfo && <Modal onClick={modalHandler} task={taskInfo} />}
       <Footer />
     </>
   );

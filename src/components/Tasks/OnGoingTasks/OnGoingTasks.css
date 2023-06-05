@@ -1,20 +1,3 @@
-.task-header {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: azure;
-  font-weight: bold;
-  font-size: 2.4rem;
-  margin: 10px;
-  text-align: center;
-}
-.ongoing-task-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding-bottom: 15px;
-  border-bottom: rgb(53, 60, 61) solid 3px;
-  margin: 35px;
-  gap: 10px;
-}
 .ongoing-task-box {
   width: 250px;
 
@@ -29,11 +12,4 @@
   font-size: 2rem;
   color: aliceblue;
   text-align: center;
-}
-.task-description {
-  font-size: 1.6rem;
-  overflow: hidden;
-  margin: 1.5rem auto;
-  text-align: center;
-  height: 7.5rem;
 }
