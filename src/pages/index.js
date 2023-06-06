@@ -12,58 +12,64 @@ import OnGoingTasks from "../components/Tasks/OnGoingTasks/OnGoingTasks";
 import FinishedTasks from "../components/Tasks/FinishedTasks/FinishedTasks";
 import UnfinishedTasks from "../components/Tasks/UnfinishedTasks/UnfinishedTasks";
 import Modal from "../components/Modal/Modal";
+import AddNewTask from "../components/AddNewTask/AddNewTask";
+const events = ["Frontend"];
+const tasks = [
+  {
+    taskId: 101,
+    taskName: "Learn React",
+    description:
+      "Lorem ipsum dolor sit amet consectetur,adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
+    date: "2023-02-01",
+    eventName: "Frontend",
+    status: "ongoing",
+    dateCreated: "2022-01-01",
+  },
+  {
+    taskId: 102,
+    taskName: "Learn HTML",
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
+    date: "",
+    eventName: "Frontend",
+    status: "finished",
+    dateCreated: "2022-01-01",
+  },
+  {
+    taskId: 103,
+    taskName: "Learn CSS",
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
+    date: "",
+    eventName: "Frontend",
+    status: "finished",
+    dateCreated: "2022-01-01",
+  },
+  {
+    taskId: 104,
+    taskName: "Learn JS",
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
+    date: "",
+    eventName: "Frontend",
+    status: "finished",
+    dateCreated: "2022-01-01",
+  },
+  {
+    taskId: 105,
+    taskName: "Learn Python",
+    description:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
+    date: "2020-06-08",
+    eventName: "Frontend",
+    status: "unfinished",
+    dateCreated: "2022-01-01",
+  },
+];
 
 const IndexPage = () => {
-  const events = ["Frontend"];
-  const tasks = [
-    {
-      taskName: "Learn React",
-      description:
-        "Lorem ipsum dolor sit amet consectetur,adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
-      date: "2023-02-01",
-      eventName: "Frontend",
-      status: "ongoing",
-      dateCreated: "2022-01-01",
-    },
-    {
-      taskName: "Learn HTML",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
-      date: "",
-      eventName: "Frontend",
-      status: "finished",
-      dateCreated: "2022-01-01",
-    },
-    {
-      taskName: "Learn CSS",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
-      date: "",
-      eventName: "Frontend",
-      status: "finished",
-      dateCreated: "2022-01-01",
-    },
-    {
-      taskName: "Learn JS",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
-      date: "",
-      eventName: "Frontend",
-      status: "finished",
-      dateCreated: "2022-01-01",
-    },
-    {
-      taskName: "Learn Python",
-      description:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus odit quos in reprehenderit ipsum maiores",
-      date: "2020-06-08",
-      eventName: "Frontend",
-      status: "unfinished",
-      dateCreated: "2022-01-01",
-    },
-  ];
-
   const [openTaskInfo, setOpenTaskInfo] = useState(false);
+  const [addingNewTask, setAddingNewTask] = useState(false);
 
   const [eventList, setEventList] = useState(events);
   const [filterEventPar, setFilterEventPar] = useState(tasks);
@@ -81,19 +87,32 @@ const IndexPage = () => {
     SetTaskInfo(filterdtask);
     setOpenTaskInfo(true);
   };
+  const handleNewTask = () => {
+    if (!addingNewTask) {
+      setAddingNewTask(true);
+    }
+    if (addingNewTask) {
+      setAddingNewTask(false);
+    }
+  };
 
-  const modalHandler = (e) => {
+  const modalHandler = (e, string) => {
     if (e === "close") {
       setOpenTaskInfo(false);
     }
-    if (e === "confirm") {
+    if (string === "confirm") {
       setOpenTaskInfo(false);
       console.log(tasks.includes(taskInfo));
+      // let index = tasks.findIndex((task) => task.taskId === e.taskId);
+      tasks[tasks.findIndex((task) => task.taskId === e.taskId)].status =
+        "finished";
+      setFilterEventPar(tasks);
 
-      taskInfo.status = "finished";
+      // taskInfo.status = "finished";
     }
+    // setOpenTaskInfo(false);
     // e.preventDefault();
-    console.log(e);
+    console.log(e, string);
   };
   return (
     <>
@@ -111,7 +130,9 @@ const IndexPage = () => {
         </MainBar>
       </Container>
       {openTaskInfo && <Modal onClick={modalHandler} task={taskInfo} />}
+      {addingNewTask && <Modal events={events} />}
       <Footer />
+      <AddNewTask onClick={handleNewTask} />
     </>
   );
 };
