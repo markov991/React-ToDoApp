@@ -1,8 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Modal.css";
 
 const Modal = ({ task, onClick, events }) => {
-  console.log(events);
+  const [newEventInputField, setNewEventInputField] = useState(false);
+  const [selectedEventField, setSelectedEventField] = useState();
+  const [taskNameInput, setTaskNameInput] = useState();
+  const [taskDescriptionInput, setTaskDescriptionInput] = useState();
+  const [taskDateInput, setTaskDateInput] = useState();
+
+  // const [newTask, setNewTask] = useState();
+
+  const selectEventHandeler = (event) => {
+    if (event.target.value === "New") {
+      setNewEventInputField(true);
+    } else {
+      setNewEventInputField(false);
+      setSelectedEventField({ eventName: event.target.value });
+    }
+    console.log(event.target.value);
+  };
+  const taskNameChangeHandler = (e) => {
+    setTaskNameInput({ taskName: e.target.value });
+  };
+  const taskDescriptionChangeHandler = (e) => {
+    setTaskDescriptionInput({ description: e.target.value });
+  };
+  const taskDateChangeHandler = (e) => {
+    setTaskDateInput({ date: e.target.value });
+  };
+
+  const submitHandeler = (e) => {
+    e.preventDefault();
+
+    console.log(
+      selectedEventField,
+      taskNameInput,
+      taskDescriptionInput,
+      taskDateInput
+    );
+  };
+
   if (typeof task === "object") {
     return (
       <div className="modal">
@@ -34,9 +71,16 @@ const Modal = ({ task, onClick, events }) => {
           <div className="input-container">
             <div className="required-fields">
               <label>Task Name</label>
-              <input type="text" id="task-name" name="task-name" size={20} />
+              <input
+                onChange={taskNameChangeHandler}
+                type="text"
+                id="task-name"
+                name="task-name"
+                size={20}
+              />
               <label>Task desription</label>
               <textarea
+                onChange={taskDescriptionChangeHandler}
                 name="task-description"
                 id="task-description"
                 cols={30}
@@ -45,18 +89,32 @@ const Modal = ({ task, onClick, events }) => {
             </div>
             <div className="optional-fields">
               <label>Chose a date</label>
-              <input type="date" />
+              <input onChange={taskDateChangeHandler} type="date" />
               <label>Event</label>
-              <select>
+              <select onChange={selectEventHandeler}>
                 <option></option>
                 <option>New</option>
                 {events.map((event) => {
                   return <option key={event}>{event}</option>;
                 })}
               </select>
+              {newEventInputField && (
+                <input
+                  type="text"
+                  name="event-name"
+                  size="20"
+                  placeholder="Plaese enter event name"
+                ></input>
+              )}
             </div>
           </div>
-          <button className="form-subb-button">Subbmit</button>
+          <button
+            onClick={submitHandeler}
+            type="submit"
+            className="form-subb-button"
+          >
+            Subbmit
+          </button>
         </form>
       </div>
     );

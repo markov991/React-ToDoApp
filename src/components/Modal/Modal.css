@@ -75,7 +75,8 @@
 .optional-fields {
   justify-content: center;
 }
-.required-fields > * {
+.required-fields > *,
+.optional-fields > * {
   margin: 5px;
 }
 .modal label {
