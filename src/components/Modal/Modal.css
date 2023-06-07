@@ -80,5 +80,10 @@
   margin: 5px;
 }
 .modal label {
+  display: flex;
+  flex-direction: column;
   font-size: 1.6rem;
+}
+.modal label > * {
+  margin-top: 1rem;
 }

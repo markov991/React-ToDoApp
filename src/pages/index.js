@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
@@ -74,6 +74,7 @@ const IndexPage = () => {
   const [eventList, setEventList] = useState(events);
   const [filterEventPar, setFilterEventPar] = useState(tasks);
   const [taskInfo, SetTaskInfo] = useState();
+  const [newTask, setNewTask] = useState({});
 
   const filteringActiveTasks = () => {
     setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
@@ -114,6 +115,69 @@ const IndexPage = () => {
     // e.preventDefault();
     console.log(e, string);
   };
+  useEffect(() => {
+    if (
+      !events.includes(newTask.eventName) &&
+      !newTask.eventName === undefined
+    ) {
+      events.push(newTask.eventName);
+
+      setEventList(events);
+      console.log(events);
+    }
+    if (!Object.keys(newTask).length === 0) {
+      tasks.push(newTask);
+    }
+    console.log(events);
+    console.log(newTask.eventName);
+    console.log(tasks);
+  }, [newTask, eventList]);
+  // useEffect(() =>{},)
+
+  // const y = (t) => {
+  //   setNewTask({
+  //     eventName: t.selectedEventField.eventName,
+  //     taskName: t.taskNameInput.taskName,
+  //     description: t.taskDescriptionInput.description,
+  //     date: t.taskDateInput.date,
+  //   });
+  //   console.log(t);
+  //   setAddingNewTask(false);
+  // };
+  // const y = ({
+  //   selectedEventField,
+  //   taskNameInput,
+  //   taskDescriptionInput,
+  //   taskDateInput,
+  // }) => {
+  //   setNewTask({
+  //     ...selectedEventField,
+  //     ...taskNameInput,
+  //     ...taskDescriptionInput,
+  //     ...taskDateInput,
+  //     status: "ongoing",
+  //   });
+  //   console.log();
+  //   setAddingNewTask(false);
+  // };
+  const y = ({
+    selectedEventField,
+    taskNameInput,
+    taskDescriptionInput,
+    taskDateInput,
+  }) => {
+    setNewTask({
+      ...taskNameInput,
+      ...selectedEventField,
+      ...taskDescriptionInput,
+      ...taskDateInput,
+      status: "ongoing",
+    });
+    console.log();
+
+    setAddingNewTask(false);
+  };
+
   return (
     <>
       <Header />
@@ -130,7 +194,7 @@ const IndexPage = () => {
         </MainBar>
       </Container>
       {openTaskInfo && <Modal onClick={modalHandler} task={taskInfo} />}
-      {addingNewTask && <Modal events={events} />}
+      {addingNewTask && <Modal events={events} x={y} />}
       <Footer />
       <AddNewTask onClick={handleNewTask} />
     </>

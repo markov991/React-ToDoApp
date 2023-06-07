@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "./Modal.css";
 
-const Modal = ({ task, onClick, events }) => {
+const Modal = ({ task, onClick, events, x }) => {
   const [newEventInputField, setNewEventInputField] = useState(false);
+  // const [isDisabled, setIsDisabled] = useState(true);
   const [selectedEventField, setSelectedEventField] = useState();
   const [taskNameInput, setTaskNameInput] = useState();
   const [taskDescriptionInput, setTaskDescriptionInput] = useState();
@@ -19,6 +20,11 @@ const Modal = ({ task, onClick, events }) => {
     }
     console.log(event.target.value);
   };
+  const selectNewEventHandeler = (event) => {
+    setSelectedEventField({ eventName: event.target.value });
+
+    console.log(event.target.value);
+  };
   const taskNameChangeHandler = (e) => {
     setTaskNameInput({ taskName: e.target.value });
   };
@@ -31,6 +37,13 @@ const Modal = ({ task, onClick, events }) => {
 
   const submitHandeler = (e) => {
     e.preventDefault();
+
+    x({
+      selectedEventField,
+      taskNameInput,
+      taskDescriptionInput,
+      taskDateInput,
+    });
 
     console.log(
       selectedEventField,
@@ -51,10 +64,7 @@ const Modal = ({ task, onClick, events }) => {
             <div>Deadline date: {task.date}</div>
             <div>
               Task status:
-              <span className={`taskStatus-${task.status}`}>
-                {" "}
-                {task.status}
-              </span>
+              <span className={`taskStatus-${task.status}`}>{task.status}</span>
             </div>
           </div>
         </div>
@@ -70,42 +80,51 @@ const Modal = ({ task, onClick, events }) => {
         <form className="new-task-form">
           <div className="input-container">
             <div className="required-fields">
-              <label>Task Name</label>
-              <input
-                onChange={taskNameChangeHandler}
-                type="text"
-                id="task-name"
-                name="task-name"
-                size={20}
-              />
-              <label>Task desription</label>
-              <textarea
-                onChange={taskDescriptionChangeHandler}
-                name="task-description"
-                id="task-description"
-                cols={30}
-                rows={5}
-              />
+              <label>
+                Task Name
+                <input
+                  onChange={taskNameChangeHandler}
+                  type="text"
+                  id="task-name"
+                  name="task-name"
+                  size={20}
+                />
+              </label>
+              <label>
+                Task desription
+                <textarea
+                  onChange={taskDescriptionChangeHandler}
+                  name="task-description"
+                  id="task-description"
+                  cols={30}
+                  rows={5}
+                />
+              </label>
             </div>
             <div className="optional-fields">
-              <label>Chose a date</label>
-              <input onChange={taskDateChangeHandler} type="date" />
-              <label>Event</label>
-              <select onChange={selectEventHandeler}>
-                <option></option>
-                <option>New</option>
-                {events.map((event) => {
-                  return <option key={event}>{event}</option>;
-                })}
-              </select>
-              {newEventInputField && (
-                <input
-                  type="text"
-                  name="event-name"
-                  size="20"
-                  placeholder="Plaese enter event name"
-                ></input>
-              )}
+              <label>
+                Chose a date
+                <input onChange={taskDateChangeHandler} type="date" />
+              </label>
+              <label>
+                Event
+                <select onChange={selectEventHandeler}>
+                  <option></option>
+                  <option>New</option>
+                  {events.map((event, i) => {
+                    return <option key={`event-${event}`}>{event}</option>;
+                  })}
+                </select>
+                {newEventInputField && (
+                  <input
+                    onChange={selectNewEventHandeler}
+                    type="text"
+                    name="event-name"
+                    size="20"
+                    placeholder="Plaese enter event name"
+                  ></input>
+                )}
+              </label>
             </div>
           </div>
           <button
