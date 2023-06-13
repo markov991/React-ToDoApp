@@ -78,7 +78,6 @@ const IndexPage = () => {
 
   const filteringActiveTasks = () => {
     setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
-    console.log("hello");
   };
   const filteringSelectedEvent = (e) => {
     setFilterEventPar(tasks.filter((task) => task.eventName === e));
@@ -87,6 +86,7 @@ const IndexPage = () => {
   const openModalInfo = (filterdtask) => {
     SetTaskInfo(filterdtask);
     setOpenTaskInfo(true);
+    console.log(taskInfo);
   };
   const handleNewTask = () => {
     if (!addingNewTask) {
@@ -103,63 +103,32 @@ const IndexPage = () => {
     }
     if (string === "confirm") {
       setOpenTaskInfo(false);
-      console.log(tasks.includes(taskInfo));
-      // let index = tasks.findIndex((task) => task.taskId === e.taskId);
+
       tasks[tasks.findIndex((task) => task.taskId === e.taskId)].status =
         "finished";
       setFilterEventPar(tasks);
-
-      // taskInfo.status = "finished";
     }
-    // setOpenTaskInfo(false);
-    // e.preventDefault();
-    console.log(e, string);
   };
+
   useEffect(() => {
     if (
       !events.includes(newTask.eventName) &&
-      !newTask.eventName === undefined
+      !(newTask.eventName === "" || newTask.eventName === undefined)
     ) {
       events.push(newTask.eventName);
 
-      setEventList(events);
+      setEventList([...events]);
+
       console.log(events);
     }
-    if (!Object.keys(newTask).length === 0) {
+  }, [newTask, eventList]);
+
+  useEffect(() => {
+    if (!(Object.keys(newTask).length === 0)) {
       tasks.push(newTask);
     }
-    console.log(events);
-    console.log(newTask.eventName);
-    console.log(tasks);
-  }, [newTask, eventList]);
-  // useEffect(() =>{},)
+  }, [newTask]);
 
-  // const y = (t) => {
-  //   setNewTask({
-  //     eventName: t.selectedEventField.eventName,
-  //     taskName: t.taskNameInput.taskName,
-  //     description: t.taskDescriptionInput.description,
-  //     date: t.taskDateInput.date,
-  //   });
-  //   console.log(t);
-  //   setAddingNewTask(false);
-  // };
-  // const y = ({
-  //   selectedEventField,
-  //   taskNameInput,
-  //   taskDescriptionInput,
-  //   taskDateInput,
-  // }) => {
-  //   setNewTask({
-  //     ...selectedEventField,
-  //     ...taskNameInput,
-  //     ...taskDescriptionInput,
-  //     ...taskDateInput,
-  //     status: "ongoing",
-  //   });
-  //   console.log();
-  //   setAddingNewTask(false);
-  // };
   const y = ({
     selectedEventField,
     taskNameInput,
@@ -173,7 +142,6 @@ const IndexPage = () => {
       ...taskDateInput,
       status: "ongoing",
     });
-    console.log();
 
     setAddingNewTask(false);
   };

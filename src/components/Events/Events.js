@@ -2,7 +2,7 @@ import React from "react";
 import "./Events.css";
 
 const Events = ({ events, onClick }) => {
-  console.log(events);
+  // console.log(events);
   return (
     <div className="events-container">
       {events.map((event, i) => {
