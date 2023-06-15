@@ -73,7 +73,7 @@ const IndexPage = () => {
 
   const [eventList, setEventList] = useState(events);
   const [filterEventPar, setFilterEventPar] = useState(tasks);
-  const [taskInfo, SetTaskInfo] = useState();
+  const [taskInfo, SetTaskInfo] = useState({});
   const [newTask, setNewTask] = useState({});
 
   const filteringActiveTasks = () => {
@@ -86,7 +86,6 @@ const IndexPage = () => {
   const openModalInfo = (filterdtask) => {
     SetTaskInfo(filterdtask);
     setOpenTaskInfo(true);
-    console.log(taskInfo);
   };
   const handleNewTask = () => {
     if (!addingNewTask) {
@@ -126,16 +125,28 @@ const IndexPage = () => {
   useEffect(() => {
     if (!(Object.keys(newTask).length === 0)) {
       tasks.push(newTask);
+      if (newTask.eventName === "" || newTask.eventName === undefined) {
+        setFilterEventPar([
+          ...tasks.filter((task) => task.status === "ongoing"),
+        ]);
+        console.log("uslov zadovoljen");
+      } else {
+        setFilterEventPar([
+          ...tasks.filter((task) => task.eventName === newTask.eventName),
+        ]);
+      }
+      console.log(newTask.eventName, tasks);
     }
   }, [newTask]);
 
-  const y = ({
+  const addingNewTaskHandler = ({
     selectedEventField,
     taskNameInput,
     taskDescriptionInput,
     taskDateInput,
   }) => {
     setNewTask({
+      taskId: Math.floor(Math.random() * 1000),
       ...taskNameInput,
       ...selectedEventField,
       ...taskDescriptionInput,
@@ -162,7 +173,9 @@ const IndexPage = () => {
         </MainBar>
       </Container>
       {openTaskInfo && <Modal onClick={modalHandler} task={taskInfo} />}
-      {addingNewTask && <Modal events={events} x={y} />}
+      {addingNewTask && (
+        <Modal events={events} addingNewTask={addingNewTaskHandler} />
+      )}
       <Footer />
       <AddNewTask onClick={handleNewTask} />
     </>
@@ -171,4 +184,4 @@ const IndexPage = () => {
 
 export default IndexPage;
 
-export const Head = () => <title>Home Page</title>;
+export const Head = () => <title>React ToDoApp</title>;

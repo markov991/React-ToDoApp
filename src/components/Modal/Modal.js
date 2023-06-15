@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Modal.css";
 
-const Modal = ({ task, onClick, events, x }) => {
+const Modal = ({ task, onClick, events, addingNewTask }) => {
   const [newEventInputField, setNewEventInputField] = useState(false);
-  // const [isDisabled, setIsDisabled] = useState(true);
+  const [taskNameConditionFullfiled, setTaskNameConditionFullfiled] =
+    useState(false);
+  const [
+    taskDescriptionConditionFullfiled,
+    setTaskDescriptionConditionFullfiled,
+  ] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const [selectedEventField, setSelectedEventField] = useState();
   const [taskNameInput, setTaskNameInput] = useState();
   const [taskDescriptionInput, setTaskDescriptionInput] = useState();
   const [taskDateInput, setTaskDateInput] = useState();
 
-  // const [newTask, setNewTask] = useState();
+  useEffect(() => {
+    if (taskDescriptionConditionFullfiled && taskNameConditionFullfiled) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [taskNameConditionFullfiled, taskDescriptionConditionFullfiled]);
 
   const selectEventHandeler = (event) => {
     if (event.target.value === "New") {
@@ -18,18 +31,35 @@ const Modal = ({ task, onClick, events, x }) => {
       setNewEventInputField(false);
       setSelectedEventField({ eventName: event.target.value });
     }
-    console.log(event.target.value);
+
+    console.log(event.target.value, newEventInputField);
   };
   const selectNewEventHandeler = (event) => {
     setSelectedEventField({ eventName: event.target.value });
 
     console.log(event.target.value);
   };
+
+  //Za svaki poseban state sa true and fals na osnovu kojeg ce da se proverava da li su ispunjeni uslovi vezani za popunjena polja
   const taskNameChangeHandler = (e) => {
-    setTaskNameInput({ taskName: e.target.value });
+    if (e.target.value) {
+      setTaskNameConditionFullfiled(true);
+
+      setTaskNameInput({ taskName: e.target.value });
+    }
+    if (!e.target.value) {
+      setTaskNameConditionFullfiled(false);
+    }
   };
   const taskDescriptionChangeHandler = (e) => {
-    setTaskDescriptionInput({ description: e.target.value });
+    if (e.target.value) {
+      setTaskDescriptionConditionFullfiled(true);
+      setTaskDescriptionInput({ description: e.target.value });
+    }
+    if (!e.target.value) {
+      setTaskDescriptionConditionFullfiled(false);
+    }
+    console.log(e.target.value);
   };
   const taskDateChangeHandler = (e) => {
     setTaskDateInput({ date: e.target.value });
@@ -38,19 +68,12 @@ const Modal = ({ task, onClick, events, x }) => {
   const submitHandeler = (e) => {
     e.preventDefault();
 
-    x({
+    addingNewTask({
       selectedEventField,
       taskNameInput,
       taskDescriptionInput,
       taskDateInput,
     });
-
-    console.log(
-      selectedEventField,
-      taskNameInput,
-      taskDescriptionInput,
-      taskDateInput
-    );
   };
 
   if (typeof task === "object") {
@@ -128,6 +151,7 @@ const Modal = ({ task, onClick, events, x }) => {
             </div>
           </div>
           <button
+            disabled={isDisabled}
             onClick={submitHandeler}
             type="submit"
             className="form-subb-button"
