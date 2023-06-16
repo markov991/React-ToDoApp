@@ -110,10 +110,7 @@ const IndexPage = () => {
   };
 
   useEffect(() => {
-    if (
-      !events.includes(newTask.eventName) &&
-      !(newTask.eventName === "" || newTask.eventName === undefined)
-    ) {
+    if (!events.includes(newTask.eventName) && newTask.eventName) {
       events.push(newTask.eventName);
 
       setEventList([...events]);
@@ -125,7 +122,9 @@ const IndexPage = () => {
   useEffect(() => {
     if (!(Object.keys(newTask).length === 0)) {
       tasks.push(newTask);
-      if (newTask.eventName === "" || newTask.eventName === undefined) {
+      //old version of code
+      // if (newTask.eventName === "" || newTask.eventName === undefined)
+      if (!newTask.eventName) {
         setFilterEventPar([
           ...tasks.filter((task) => task.status === "ongoing"),
         ]);
