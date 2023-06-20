@@ -75,13 +75,25 @@ const IndexPage = () => {
   const [filterEventPar, setFilterEventPar] = useState(tasks);
   const [taskInfo, SetTaskInfo] = useState({});
   const [newTask, setNewTask] = useState({});
+  const [currentDate, setCurrentDate] = useState();
+
+  useEffect(() => {
+    let now = new Date();
+    let year = now.getFullYear();
+    let month =
+      now.getMonth() > 9 ? now.getMonth() + 1 : "0" + (now.getMonth() + 1);
+    let date = now.getDate() > 9 ? now.getDate() : "0" + now.getDate();
+
+    console.log(now.getDate());
+
+    setCurrentDate(year + "-" + month + "-" + date);
+  }, []);
 
   const filteringActiveTasks = () => {
     setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
   };
   const filteringSelectedEvent = (e) => {
     setFilterEventPar(tasks.filter((task) => task.eventName === e));
-    console.log(e);
   };
   const openModalInfo = (filterdtask) => {
     SetTaskInfo(filterdtask);
@@ -134,9 +146,19 @@ const IndexPage = () => {
         events.push(task.eventName);
       }
     });
-    setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
+
     setEventList([...events]);
   }, []);
+
+  useEffect(() => {
+    tasks.forEach((task) => {
+      if (currentDate > task.date && !(task.status === "finished")) {
+        task.status = "unfinished";
+        console.log(task);
+      }
+    });
+    setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
+  }, [currentDate]);
 
   useEffect(() => {
     if (!events.includes(newTask.eventName) && newTask.eventName) {
@@ -179,6 +201,7 @@ const IndexPage = () => {
       ...taskDescriptionInput,
       ...taskDateInput,
       status: "ongoing",
+      dateCreated: currentDate,
     });
 
     setAddingNewTask(false);

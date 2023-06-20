@@ -68,10 +68,10 @@ const Modal = ({ task, onClick, events, addingNewTask }) => {
     e.preventDefault();
 
     addingNewTask({
-      selectedEventField,
       taskNameInput,
       taskDescriptionInput,
       taskDateInput,
+      selectedEventField,
     });
   };
 
@@ -86,7 +86,10 @@ const Modal = ({ task, onClick, events, addingNewTask }) => {
             <div>Deadline date: {task.date}</div>
             <div>
               Task status:
-              <span className={`taskStatus-${task.status}`}>{task.status}</span>
+              <span className={`taskStatus-${task.status}`}>
+                {" "}
+                {task.status}
+              </span>
             </div>
           </div>
         </div>

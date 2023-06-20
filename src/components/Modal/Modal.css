@@ -39,6 +39,12 @@
 .taskStatus-finished {
   color: rgb(0, 255, 0);
 }
+.taskStatus-unfinished {
+  color: rgb(255, 0, 0);
+}
+.taskStatus-ongoing {
+  color: rgb(208, 255, 0);
+}
 .modal-btns {
   display: flex;
   gap: 30%;
