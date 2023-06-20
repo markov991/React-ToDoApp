@@ -59,7 +59,6 @@ const Modal = ({ task, onClick, events, addingNewTask }) => {
     if (!e.target.value) {
       setTaskDescriptionConditionFullfiled(false);
     }
-    console.log(e.target.value);
   };
   const taskDateChangeHandler = (e) => {
     setTaskDateInput({ date: e.target.value });

@@ -105,9 +105,38 @@ const IndexPage = () => {
 
       tasks[tasks.findIndex((task) => task.taskId === e.taskId)].status =
         "finished";
-      setFilterEventPar(tasks);
+
+      if (e.eventName) {
+        setFilterEventPar(
+          tasks.filter((task) => task.eventName === e.eventName)
+        );
+      } else {
+        setFilterEventPar(tasks);
+      }
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
   };
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("tasks"));
+
+    if (!data) return;
+    data.forEach((task, index) => {
+      tasks.forEach((originalTask) => {
+        if (task.taskId === originalTask.taskId) {
+          originalTask.status = task.status;
+        }
+      });
+      if (!tasks[index]) {
+        tasks.push(task);
+      }
+      if (!events.includes(task.eventName)) {
+        events.push(task.eventName);
+      }
+    });
+    setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
+    setEventList([...events]);
+  }, []);
 
   useEffect(() => {
     if (!events.includes(newTask.eventName) && newTask.eventName) {
@@ -122,13 +151,12 @@ const IndexPage = () => {
   useEffect(() => {
     if (!(Object.keys(newTask).length === 0)) {
       tasks.push(newTask);
-      //old version of code
-      // if (newTask.eventName === "" || newTask.eventName === undefined)
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+
       if (!newTask.eventName) {
         setFilterEventPar([
           ...tasks.filter((task) => task.status === "ongoing"),
         ]);
-        console.log("uslov zadovoljen");
       } else {
         setFilterEventPar([
           ...tasks.filter((task) => task.eventName === newTask.eventName),
