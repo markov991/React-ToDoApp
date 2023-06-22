@@ -31,13 +31,9 @@ const Modal = ({ task, onClick, events, addingNewTask }) => {
       setNewEventInputField(false);
       setSelectedEventField({ eventName: event.target.value });
     }
-
-    console.log(event.target.value, newEventInputField);
   };
   const selectNewEventHandeler = (event) => {
     setSelectedEventField({ eventName: event.target.value });
-
-    console.log(event.target.value);
   };
 
   //Za svaki poseban state sa true and fals na osnovu kojeg ce da se proverava da li su ispunjeni uslovi vezani za popunjena polja
@@ -95,7 +91,7 @@ const Modal = ({ task, onClick, events, addingNewTask }) => {
         </div>
         <div className="modal-btns">
           <button onClick={() => onClick(task, "confirm")}>Confirm</button>
-          <button onClick={() => onClick("close")}>Close</button>
+          <button onClick={onClick}>Close</button>
         </div>
       </div>
     );

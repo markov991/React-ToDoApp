@@ -79,55 +79,14 @@ const IndexPage = () => {
 
   useEffect(() => {
     let now = new Date();
-    let year = now.getFullYear();
-    let month =
-      now.getMonth() > 9 ? now.getMonth() + 1 : "0" + (now.getMonth() + 1);
-    let date = now.getDate() > 9 ? now.getDate() : "0" + now.getDate();
-
-    console.log(now.getDate());
+    let [year, month, date] = [
+      now.getFullYear(),
+      now.getMonth() > 9 ? now.getMonth() + 1 : "0" + (now.getMonth() + 1),
+      now.getDate() > 9 ? now.getDate() : "0" + now.getDate(),
+    ];
 
     setCurrentDate(year + "-" + month + "-" + date);
   }, []);
-
-  const filteringActiveTasks = () => {
-    setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
-  };
-  const filteringSelectedEvent = (e) => {
-    setFilterEventPar(tasks.filter((task) => task.eventName === e));
-  };
-  const openModalInfo = (filterdtask) => {
-    SetTaskInfo(filterdtask);
-    setOpenTaskInfo(true);
-  };
-  const handleNewTask = () => {
-    if (!addingNewTask) {
-      setAddingNewTask(true);
-    }
-    if (addingNewTask) {
-      setAddingNewTask(false);
-    }
-  };
-
-  const modalHandler = (e, string) => {
-    if (e === "close") {
-      setOpenTaskInfo(false);
-    }
-    if (string === "confirm") {
-      setOpenTaskInfo(false);
-
-      tasks[tasks.findIndex((task) => task.taskId === e.taskId)].status =
-        "finished";
-
-      if (e.eventName) {
-        setFilterEventPar(
-          tasks.filter((task) => task.eventName === e.eventName)
-        );
-      } else {
-        setFilterEventPar(tasks);
-      }
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
-  };
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("tasks"));
@@ -154,7 +113,6 @@ const IndexPage = () => {
     tasks.forEach((task) => {
       if (currentDate > task.date && !(task.status === "finished")) {
         task.status = "unfinished";
-        console.log(task);
       }
     });
     setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
@@ -165,8 +123,6 @@ const IndexPage = () => {
       events.push(newTask.eventName);
 
       setEventList([...events]);
-
-      console.log(events);
     }
   }, [newTask, eventList]);
 
@@ -184,9 +140,63 @@ const IndexPage = () => {
           ...tasks.filter((task) => task.eventName === newTask.eventName),
         ]);
       }
-      console.log(newTask.eventName, tasks);
     }
   }, [newTask]);
+
+  const filteringActiveTasks = () => {
+    setFilterEventPar(tasks.filter((task) => task.status === "ongoing"));
+  };
+  const filteringSelectedEvent = (e) => {
+    setFilterEventPar(tasks.filter((task) => task.eventName === e));
+  };
+  const openModalInfo = (filterdtask) => {
+    SetTaskInfo(filterdtask);
+    setOpenTaskInfo(true);
+  };
+  const handleNewTask = () => {
+    if (!addingNewTask) {
+      setAddingNewTask(true);
+    }
+    if (addingNewTask) {
+      setAddingNewTask(false);
+    }
+  };
+
+  const filterByDateHandeler = (e, param) => {
+    if (e) {
+      switch (param) {
+        case "FILTER_BY_INPUT_DATE":
+          setFilterEventPar(tasks.filter((task) => task.dateCreated === e));
+          break;
+
+        case "FILTER_BY_DEADLINE_DATE":
+          setFilterEventPar(tasks.filter((task) => task.date === e));
+          break;
+        default:
+      }
+    }
+  };
+
+  const modalHandler = (e, string) => {
+    switch (string) {
+      case "confirm": {
+        tasks[tasks.findIndex((task) => task.taskId === e.taskId)].status =
+          "finished";
+
+        if (e.eventName) {
+          setFilterEventPar(
+            tasks.filter((task) => task.eventName === e.eventName)
+          );
+        } else {
+          setFilterEventPar(tasks);
+        }
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        break;
+      }
+      default:
+    }
+    setOpenTaskInfo(false);
+  };
 
   const addingNewTaskHandler = ({
     selectedEventField,
@@ -212,7 +222,7 @@ const IndexPage = () => {
       <Header />
       <Container>
         <SideBar>
-          <DateFilter />
+          <DateFilter onClick={filterByDateHandeler} />
           <Default onClick={filteringActiveTasks} />
           <Events onClick={filteringSelectedEvent} events={eventList} />
         </SideBar>

@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import "./DateFilter.css";
 
-const DateFilter = () => {
+const DateFilter = ({ onClick }) => {
+  const [dateSelected, setDateSelected] = useState();
+
+  const dateChangeHandeler = (e) => {
+    setDateSelected(e.target.value);
+  };
+
   return (
     <div className="calendar-filter-box">
-      <input type="date" id="date" />
+      <input onChange={dateChangeHandeler} type="date" id="date" />
       <div className="btn-filter-box">
-        <button>Filter by input date</button>
-        <button>Filter by dedline date</button>
+        <button onClick={() => onClick(dateSelected, "FILTER_BY_INPUT_DATE")}>
+          Filter by input date
+        </button>
+        <button
+          onClick={() => onClick(dateSelected, "FILTER_BY_DEADLINE_DATE")}
+        >
+          Filter by deadline date
+        </button>
       </div>
     </div>
   );
